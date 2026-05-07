@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="back-link-wrapper">
+    <a href="{{ url_for('index') }}" class="back-link">
+        ← Back to Users
+    </a>
+</div>
+
+<section class="movie-grid">
+
+    {% for movie in movies %}
+
+    <article class="movie-card">
+
+        <img
+            class="movie-poster"
+            src="{{ movie.poster_url }}"
+            alt="{{ movie.name }}"
+        >
+
+        <div class="movie-content">
+
+            <form
+                action="{{ url_for('update_user_movie',
+                                   user_id=user_id,
+                                   movie_id=movie.id) }}"
+                method="POST"
+                class="movie-title-form"
+            >
+
+                <input
+                    type="text"
+                    name="movie_name"
+                    value="{{ movie.name }}"
+                    class="movie-title-input"
+                >
+
+                <button type="submit">
+                    Save
+                </button>
+
+            </form>
+
+            <div class="movie-meta">
+                <span>{{ movie.director }}</span>
+                <span>{{ movie.release_year }}</span>
+            </div>
+
+            <form
+                action="{{ url_for('delete_user_movie',
+                                   user_id=user_id,
+                                   movie_id=movie.id) }}"
+                method="POST"
+                class="delete-form"
+            >
+
+                <button type="submit" class="delete-btn">
+                    Delete
+                </button>
+
+            </form>
+
+        </div>
+
+    </article>
+
+    {% endfor %}
+
+</section>
+
+<section class="form-section">
+
+    <form
+        action="{{ url_for('add_user_movie', user_id=user_id) }}"
+        method="post"
+        class="styled-form"
+    >
+
+        <h2>Add Movie</h2>
+
+        <input
+            type="text"
+            id="new_movie_name"
+            name="new_movie_name"
+            placeholder="Movie title..."
+            required
+        >
+
+        <input
+            type="text"
+            id="new_movie_year"
+            name="new_movie_year"
+            placeholder="Release year..."
+        >
+
+        <button type="submit">
+            Add Movie
+        </button>
+
+    </form>
+
+</section>
+
+{% endblock %}

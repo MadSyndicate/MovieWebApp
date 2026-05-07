@@ -1,10 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block content %}
+
+<section class="page-header">
+    <h1>Users</h1>
+</section>
+
+<ul class="user-list">
+    {% for user in users %}
+    <li class="user-entry">
+        <a href="{{ url_for('list_user_movies', user_id=user.id) }}"
+           class="user-card">
+            {{ user.username }}
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+
+<section class="form-section">
+    <form action="{{ url_for('create_user') }}" method="post" class="styled-form">
+
+        <label for="username">New Username</label>
+
+        <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Enter username..."
+            required
+        >
+
+        <button type="submit">
+            Add User
+        </button>
+
+    </form>
+</section>
+
+{% endblock %}
