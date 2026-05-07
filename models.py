@@ -25,3 +25,9 @@ class Movie(db.Model):
     director = db.Column(db.String(80), nullable=False)
     release_year = db.Column(db.Integer, nullable=False)
     poster_url = db.Column(db.String(250), nullable=False)
+
+    def __str__(self):
+        return str(self.name)
+
+    def __repr__(self):
+        return str(self.name)

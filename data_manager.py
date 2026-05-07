@@ -12,7 +12,7 @@ class DataManager():
         return User.query.all()
 
     def get_movies(self, user_id):
-        return Movie.query.filter_by(id=user_id).all()
+        return Movie.query.filter_by(user_id=user_id).all()
 
     def add_movie(self, movie: Movie):
         db.session.add(movie)

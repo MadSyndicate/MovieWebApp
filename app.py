@@ -1,9 +1,12 @@
 import os
+from dotenv import load_dotenv
 import sqlalchemy
 from flask import Flask, request, jsonify
 from data_manager import DataManager
-from models import db, User
+from models import db, Movie
+import fetch_movie_data as fmd
 
+load_dotenv()
 app = Flask(__name__)
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -42,6 +45,42 @@ def create_user():
 
     return "No username provided!", 400
 
+@app.route('/users/<int:user_id>/movies', methods=['GET'])
+def list_user_movies(user_id):
+    movies = data_manager.get_movies(user_id)
+    print(len(movies))
+    return str(movies)
+
+
+@app.route('/users/<int:user_id>/movies', methods=['POST'])
+def add_user_movie(user_id):
+    data = request.form or request.json
+    new_movie_name = data.get("movie_name", None)
+    if new_movie_name:
+        movie_data = fmd.fetch_movie_data(new_movie_name)
+        print(movie_data)
+        if movie_data["Response"] == 'True':
+            fetched_name = movie_data.get("Title", None)
+            fetched_release_year = movie_data.get("Year", None)
+            fetch_director = movie_data.get("Director", None)
+            fetched_post_url = movie_data.get("Poster", None)
+
+            new_movie = Movie(
+                user_id = user_id,
+                name=fetched_name,
+                director=fetch_director,
+                release_year=fetched_release_year,
+                poster_url=fetched_post_url
+            )
+            try:
+
+                data_manager.add_movie(new_movie)
+                return "Movie Added!", 200
+            except sqlalchemy.exc.IntegrityError:
+                return "Movie already exists in user collection!", 400
+
+        return "No movie data found!", 400
+    return "No Movie name provided!", 400
 
 if __name__ == '__main__':
     """
