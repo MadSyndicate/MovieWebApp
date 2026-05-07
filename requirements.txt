@@ -1,0 +1,6 @@
+
+python-dotenv
+sqlalchemy
+flask
+flask-sqlalchemy
+requests
