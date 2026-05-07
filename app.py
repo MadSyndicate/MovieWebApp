@@ -136,12 +136,16 @@ def delete_user_movie(user_id,movie_id):
             print(e)    # if unexpected thing happening
             flash("Something went wrong! Nothing was deleted", "error")
             return redirect(
-                url_for('list_user_movies', user_id=user_id),
-                code=500    # indicate that something on the server went wrong
+                url_for('list_user_movies', user_id=user_id)
             )
 
     flash("Movie not found!", "error")
     return redirect(url_for('list_user_movies', user_id=user_id))
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template("404.html"), 404
 
 
 if __name__ == '__main__':

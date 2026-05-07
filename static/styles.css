@@ -300,3 +300,51 @@ input[type="submit"]:hover {
     }
 
 }
+
+/* 404 PAGE */
+
+.error-page {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.error-code {
+    font-size: 7rem;
+    font-weight: 800;
+    color: #ff4655;
+    line-height: 1;
+    margin-bottom: 20px;
+    text-shadow: 0 0 25px rgba(255, 70, 85, 0.25);
+}
+
+.error-page h1 {
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+}
+
+.error-text {
+    color: #a0a7b8;
+    max-width: 500px;
+    margin-bottom: 35px;
+    font-size: 1.05rem;
+}
+
+.home-btn {
+    background: #ff4655;
+    color: white;
+    text-decoration: none;
+    padding: 14px 22px;
+    border-radius: 10px;
+    font-weight: bold;
+    transition: 0.2s ease;
+}
+
+.home-btn:hover {
+    background: #ff5f6d;
+    transform: translateY(-2px);
+}
