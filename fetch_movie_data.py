@@ -5,12 +5,14 @@ DATA_URL = "https://www.omdbapi.com"
 API_KEY = os.getenv('API_KEY')
 
 
-def fetch_movie_data(title):
+def fetch_movie_data(title, year=None):
     """"""
     params = {
         "apikey": API_KEY,
         "t": title
     }
+    if year:
+        params["y"] = year
     try:
         res = requests.get(DATA_URL, params=params, timeout=5)  # 5sec timeout
         return res.json()

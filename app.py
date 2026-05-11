@@ -58,17 +58,16 @@ def add_user_movie(user_id):
     data = request.form or request.json
     new_movie_name = data.get("new_movie_name", None)
     new_movie_year = int(data.get("new_movie_year") or -1)
+    if new_movie_year == -1:
+        new_movie_year = None
     if new_movie_name:
-        movie_data = fmd.fetch_movie_data(new_movie_name)
+        movie_data = fmd.fetch_movie_data(title=new_movie_name, year=new_movie_year)
         print(movie_data)
         if movie_data["Response"] == 'True':
             fetched_name = movie_data.get("Title", None)
             fetch_director = movie_data.get("Director", None)
             fetched_post_url = movie_data.get("Poster", None)
-            if new_movie_year == -1:
-                fetched_release_year = movie_data.get("Year", None)
-            else:
-                fetched_release_year = new_movie_year
+            fetched_release_year = movie_data.get("Year", None)
 
             new_movie = Movie(
                 user_id = user_id,
@@ -86,9 +85,13 @@ def add_user_movie(user_id):
                 flash(f"You allready have the movie '{new_movie_name}' in your collection!",
                       "error")
                 return redirect(url_for('list_user_movies', user_id=user_id))
-
-        flash(f"No movie data found for '{new_movie_name}'!",
-              "error")
+        if new_movie_year:
+            flash(f"No movie data found for '{new_movie_name}' and year '{new_movie_year}'!"
+                  f" Try a different combination or try without providing a year",
+                  "error")
+        else:
+            flash(f"No movie data found for '{new_movie_name}'!",
+                  "error")
         return redirect(url_for('list_user_movies', user_id=user_id))
 
     flash(f"No movie name provided!",
